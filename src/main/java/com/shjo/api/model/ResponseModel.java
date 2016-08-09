@@ -8,13 +8,11 @@ public class ResponseModel {
 	private Object date = null;
 	
 	public ResponseModel() {
-		header.isSuccessful = true;
 		header.code = 200;
 		header.message = "SUCCESS";
 	}
 
 	class Header {
-		public Boolean isSuccessful;
 		public Integer code;
 		public String message;
 	}
