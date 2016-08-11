@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ControllerAdvice
-public class ExceptionHandlerController {
+public class ExceptionHandlerAdvice {
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST) 
 	@ExceptionHandler({BindException.class, MissingServletRequestParameterException.class})
