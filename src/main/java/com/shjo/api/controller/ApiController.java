@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -59,22 +60,21 @@ public class ApiController {
 		return response;
 	}
 	
-	/*
-	@RequestMapping(value="/test3/{id}", method=RequestMethod.GET)
-	public @ResponseBody ResponseModel test3(
-		@RequestHeader String accessKey
-		, @PathVariable int id) throws Exception {
-		log.debug("######################## test3()");
-		log.debug("######################## accessKey: {}", accessKey);
-		log.debug("######################## id: {}", id);
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST) 
+	@ExceptionHandler({BindException.class, MissingServletRequestParameterException.class})
+	public @ResponseBody ResponseModel badRequestExceptionHandler() throws Exception {
+		log.debug("######################## badRequestExceptionHandler()");
 		
 		ResponseModel response = new ResponseModel();
 		
+		response.getHeader().setCode(ApiStatus.BAD_REQUEST.getCode());
+		response.getHeader().setMessage(ApiStatus.BAD_REQUEST.getMessage());
+		
 		return response;
 	}
-	*/
 
-	@ResponseStatus(HttpStatus.UNAUTHORIZED) // TODO http status 도 변경 되어야 하는건가?
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(ServletRequestBindingException.class)
 	public @ResponseBody ResponseModel unAuthrizedExceptionHandler() throws Exception {
 		log.debug("######################## unAuthrizedExceptionHandler()");
@@ -83,20 +83,6 @@ public class ApiController {
 		
 		response.getHeader().setCode(ApiStatus.UNAUTHORIZED.getCode());
 		response.getHeader().setMessage(ApiStatus.UNAUTHORIZED.getMessage());
-		
-		return response;
-	}
-	
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST) 
-	@ExceptionHandler(BindException.class)
-	public @ResponseBody ResponseModel badRequestExceptionHandler() throws Exception {
-		log.debug("######################## badRequestExceptionHandler()");
-		
-		ResponseModel response = new ResponseModel();
-		
-		response.getHeader().setCode(ApiStatus.BAD_REQUEST.getCode());
-		response.getHeader().setMessage(ApiStatus.BAD_REQUEST.getMessage());
 		
 		return response;
 	}

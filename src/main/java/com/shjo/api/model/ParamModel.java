@@ -13,5 +13,5 @@ public class ParamModel {
 	private String id;
 	
 	@NotNull
-	private int age;
+	private Integer age;
 }
