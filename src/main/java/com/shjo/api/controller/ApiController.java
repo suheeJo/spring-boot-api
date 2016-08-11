@@ -1,52 +1,104 @@
 package com.shjo.api.controller;
 
-import java.util.List;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.shjo.api.common.ApiStatus;
+import com.shjo.api.model.ParamModel;
 import com.shjo.api.model.ResponseModel;
-import com.shjo.api.param.RequestParamModel;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class ApiController {
 	
 	@RequestMapping(value="/test", method=RequestMethod.GET)
-	public @ResponseBody ResponseModel test() throws Exception {
-		return new ResponseModel();
+	public @ResponseBody ResponseModel test(
+		@RequestHeader String accessKey) throws Exception {
+		log.debug("######################## accessKey: {}", accessKey);
+		
+		ResponseModel response = new ResponseModel();
+		
+		return response;
 	}
 	
 	@RequestMapping(value="/test2", method=RequestMethod.GET)
-	public ResponseEntity<ResponseModel> test2() throws Exception {
-		return new ResponseEntity<>(new ResponseModel(), HttpStatus.OK);
+	public @ResponseBody ResponseModel test2(
+		@RequestHeader String accessKey
+		, @Valid @ModelAttribute ParamModel paramModel) throws Exception {
+		log.debug("######################## accessKey: {}", accessKey);
+		log.debug("######################## paramModel: {}", paramModel);
+		
+		ResponseModel response = new ResponseModel();
+		
+		return response;
 	}
 	
 	@RequestMapping(value="/test3", method=RequestMethod.GET)
 	public @ResponseBody ResponseModel test3(
-		@Valid @ModelAttribute RequestParamModel param) throws Exception {
-		// respone 부분을 반환 되는 ResponseModel로 변경할 순 없는걸까?
-		// exception 날 때 캐치 해서 다시 반환 하는 그런 형식으로 해야 하는건가?
-		return new ResponseModel(); 
+		@RequestHeader String accessKey
+		, @RequestParam String id) throws Exception {
+		log.debug("######################## accessKey: {}", accessKey);
+		log.debug("######################## id: {}", id);
+		
+		ResponseModel response = new ResponseModel();
+		
+		return response;
 	}
 	
-	@RequestMapping(value="/test4", method=RequestMethod.GET)
-	public @ResponseBody ResponseModel test4() throws Exception {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+	/*
+	@RequestMapping(value="/test3/{id}", method=RequestMethod.GET)
+	public @ResponseBody ResponseModel test3(
+		@RequestHeader String accessKey
+		, @PathVariable int id) throws Exception {
+		log.debug("######################## test3()");
+		log.debug("######################## accessKey: {}", accessKey);
+		log.debug("######################## id: {}", id);
 		
-		System.out.println(request.getRemoteAddr()); 
-
-
-		return new ResponseModel();
+		ResponseModel response = new ResponseModel();
+		
+		return response;
 	}
+	*/
+
+	@ResponseStatus(HttpStatus.UNAUTHORIZED) // TODO http status 도 변경 되어야 하는건가?
+	@ExceptionHandler(ServletRequestBindingException.class)
+	public @ResponseBody ResponseModel unAuthrizedExceptionHandler() throws Exception {
+		log.debug("######################## unAuthrizedExceptionHandler()");
+		
+		ResponseModel response = new ResponseModel();
+		
+		response.getHeader().setCode(ApiStatus.UNAUTHORIZED.getCode());
+		response.getHeader().setMessage(ApiStatus.UNAUTHORIZED.getMessage());
+		
+		return response;
+	}
+	
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST) 
+	@ExceptionHandler(BindException.class)
+	public @ResponseBody ResponseModel badRequestExceptionHandler() throws Exception {
+		log.debug("######################## badRequestExceptionHandler()");
+		
+		ResponseModel response = new ResponseModel();
+		
+		response.getHeader().setCode(ApiStatus.BAD_REQUEST.getCode());
+		response.getHeader().setMessage(ApiStatus.BAD_REQUEST.getMessage());
+		
+		return response;
+	}
+	
 }

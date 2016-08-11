@@ -8,12 +8,13 @@ public class ResponseModel {
 	private Object date = null;
 	
 	public ResponseModel() {
-		header.code = 200;
-		header.message = "SUCCESS";
+		header.setCode(200);
+		header.setMessage("SUCCESS");
 	}
 
-	class Header {
-		public Integer code;
-		public String message;
+	@Data
+	public class Header {
+		private Integer code;
+		private String message;
 	}
 }

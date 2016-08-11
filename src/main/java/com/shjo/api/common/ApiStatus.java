@@ -1,11 +1,9 @@
-package com.shjo.api.model;
+package com.shjo.api.common;
 
 import lombok.Getter;
 
 @Getter
 public enum ApiStatus {
-	
-	OK(200, "OK"),
 	
 	BAD_REQUEST(400, "Bad Request"),
 	UNAUTHORIZED(401, "Unauthorized"),
@@ -14,10 +12,10 @@ public enum ApiStatus {
 	INTERNAL_SERVER_ERROR(500, "Internal Server Error");
  
     private int code;
-    private String desc;
+    private String message;
  
-    ApiStatus(int code, String desc) {
+    ApiStatus(int code, String message) {
         this.code = code;
-        this.desc = desc;
+        this.message = message;
     }
 }
