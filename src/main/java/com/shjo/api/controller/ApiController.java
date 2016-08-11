@@ -2,21 +2,14 @@ package com.shjo.api.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.shjo.api.common.ApiStatus;
 import com.shjo.api.model.ParamModel;
 import com.shjo.api.model.ResponseModel;
 
@@ -56,33 +49,6 @@ public class ApiController {
 		log.debug("######################## id: {}", id);
 		
 		ResponseModel response = new ResponseModel();
-		
-		return response;
-	}
-	
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST) 
-	@ExceptionHandler({BindException.class, MissingServletRequestParameterException.class})
-	public @ResponseBody ResponseModel badRequestExceptionHandler() throws Exception {
-		log.debug("######################## badRequestExceptionHandler()");
-		
-		ResponseModel response = new ResponseModel();
-		
-		response.getHeader().setCode(ApiStatus.BAD_REQUEST.getCode());
-		response.getHeader().setMessage(ApiStatus.BAD_REQUEST.getMessage());
-		
-		return response;
-	}
-
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	@ExceptionHandler(ServletRequestBindingException.class)
-	public @ResponseBody ResponseModel unAuthrizedExceptionHandler() throws Exception {
-		log.debug("######################## unAuthrizedExceptionHandler()");
-		
-		ResponseModel response = new ResponseModel();
-		
-		response.getHeader().setCode(ApiStatus.UNAUTHORIZED.getCode());
-		response.getHeader().setMessage(ApiStatus.UNAUTHORIZED.getMessage());
 		
 		return response;
 	}
