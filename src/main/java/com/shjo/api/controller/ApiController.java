@@ -2,6 +2,7 @@ package com.shjo.api.controller;
 
 import javax.validation.Valid;
 
+import org.mortbay.log.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.shjo.api.model.ParamModel;
 import com.shjo.api.model.ResponseModel;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
 public class ApiController {
 	
-	@RequestMapping(value="/test", method=RequestMethod.GET)
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public @ResponseBody ResponseModel test(
 		@RequestHeader String access_key) throws Exception {
 		
@@ -28,7 +27,7 @@ public class ApiController {
 		return response;
 	}
 	
-	@RequestMapping(value="/test2", method=RequestMethod.GET)
+	@RequestMapping(value = "/test2", method = RequestMethod.GET)
 	public @ResponseBody ResponseModel test2(
 		@RequestHeader String access_key
 		, @Valid @ModelAttribute ParamModel paramModel) throws Exception {
@@ -38,7 +37,7 @@ public class ApiController {
 		return response;
 	}
 	
-	@RequestMapping(value="/test3", method=RequestMethod.GET)
+	@RequestMapping(value = "/test3", method = RequestMethod.GET)
 	public @ResponseBody ResponseModel test3(
 		@RequestHeader String access_key
 		, @RequestParam String id) throws Exception {
@@ -49,10 +48,12 @@ public class ApiController {
 	}
 	
 	
-	@RequestMapping(value="/test4", method=RequestMethod.POST)
+	@RequestMapping(value = "/test4/123/1234", method = RequestMethod.POST)
 	public @ResponseBody ResponseModel test4(
 		@RequestHeader String access_key
 		, @RequestBody ParamModel paramModel) throws Exception {
+		Log.debug("###### paramModel: {}", paramModel);
+		
 		ResponseModel response = new ResponseModel();
 		
 		return response;

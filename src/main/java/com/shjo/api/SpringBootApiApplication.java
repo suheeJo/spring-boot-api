@@ -20,7 +20,7 @@ public class SpringBootApiApplication {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addInterceptors(InterceptorRegistry registry) {
-				registry.addInterceptor(new AccessApiCheckInterceptor()).addPathPatterns("/*");
+				registry.addInterceptor(new AccessApiCheckInterceptor()).addPathPatterns("/**");
 			}
 		};
 	}

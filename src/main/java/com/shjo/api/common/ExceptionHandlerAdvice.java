@@ -3,6 +3,7 @@ package com.shjo.api.common;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
+	
+	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public @ResponseBody ResponseModel httpRequestMethodNotSupportedExceptionHandler() throws Exception {
+		log.debug("######################## httpRequestMethodNotSupportedExceptionHandler()");
+		
+		ResponseModel response = new ResponseModel();
+		
+		response.getHeader().setCode(ApiStatus.METHOD_NOT_ALLOWED.getCode());
+		response.getHeader().setMessage(ApiStatus.METHOD_NOT_ALLOWED.getMessage());
+		
+		return response;
+	}
 
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE) 
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
