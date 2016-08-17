@@ -19,6 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
 	
+	// TODO 404 error
+	// 404 error는 interceptor 탐
+	
+	
 	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public @ResponseBody ResponseModel httpRequestMethodNotSupportedExceptionHandler() throws Exception {

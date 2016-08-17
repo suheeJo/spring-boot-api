@@ -21,7 +21,6 @@ public class AccessApiCheckInterceptor extends HandlerInterceptorAdapter {
 		
 		
 		
-		
 		// TODO access key 체크 로직
 
 		return true;
