@@ -81,6 +81,10 @@ public class SpringBootApiApplicationTests {
 
 	@Test
 	public void 일반get() throws Exception {
+		mockMvc.perform(get("/test").header("access_key", "shjo"))
+				.andExpect(status().isOk())
+				.andDo(print());
+		
 		// exceptionHandler: O, interceptor: O
 		mockMvc.perform(get("/test"))
 				.andExpect(status().is(401))
