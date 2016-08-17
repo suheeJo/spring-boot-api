@@ -1,4 +1,4 @@
-package com.shjo.api.interceptor;
+package com.shjo.api.common.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
