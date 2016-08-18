@@ -10,6 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.shjo.api.model.LogModel;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -24,14 +26,23 @@ public class RequestFilter implements Filter {
 		log.debug("######### filter doFilter()");
 		
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
-		log.debug("####################### access_key: " + servletRequest.getHeader("access_key"));
-		log.debug("####################### getRemoteAddr: " + request.getRemoteAddr()); // 0:0:0:0:0:0:0:1
-		log.debug("####################### getRemoteAddr: " + servletRequest.getRemoteAddr()); // 0:0:0:0:0:0:0:1
 		
-		log.debug("####################### getServletPath: " + servletRequest.getServletPath()); // /test
-		log.debug("####################### getRequestURI: " + servletRequest.getRequestURI()); // /test
+		String apiUri = servletRequest.getRequestURI();
+		String methodType = servletRequest.getMethod();
+		String ip = request.getRemoteAddr();
+		String accessKey = servletRequest.getHeader("access_key");
+
+		log.debug("####################### getRequestURI: {}", apiUri);
+		log.debug("####################### getMethod: {}", methodType);
+		log.debug("####################### getRemoteAddr: {}", ip);
+//		log.debug("####################### getRemoteAddr: " + servletRequest.getRemoteAddr()); // 0:0:0:0:0:0:0:1
+		log.debug("####################### access_key: {}", accessKey);
 		
-		log.debug("####################### getMethod: " + servletRequest.getMethod()); // GET, POST
+		
+		// TODO 로그 저장
+		LogModel logModel = new LogModel(apiUri, methodType, ip, accessKey);
+		log.debug("####################### logModel: {}", logModel);
+		
 		
 		// 여기서 exception이 나면 exceptionHandler로 이동함
 		chain.doFilter(request, response);
