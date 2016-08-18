@@ -5,13 +5,16 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Aspect
 @Component
 public class RequestAop {
 	
 	@Around("execution(* com.shjo.api.controller.*Controller.*(..))")
 	public Object accessKeyCheck(ProceedingJoinPoint joinPoint) throws Throwable {
-		System.out.println("111111111111111111");
+		log.debug("###################### aop()");
 		
 		// filter 에서 exception 나는 건 여기 안탐
 		// interceptor 탄 이후에 exceptionhandler 간 것도 안탐

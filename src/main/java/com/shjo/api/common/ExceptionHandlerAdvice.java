@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,7 @@ public class ExceptionHandlerAdvice {
 	// 404 error는 interceptor 탐
 	
 	
+	// 405
 	@ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public @ResponseBody ResponseModel httpRequestMethodNotSupportedExceptionHandler() throws Exception {
@@ -36,6 +38,7 @@ public class ExceptionHandlerAdvice {
 		return response;
 	}
 
+	// 415
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE) 
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	public @ResponseBody ResponseModel mediaTypeNotSupportedExceptionHandler() throws Exception {
@@ -49,8 +52,12 @@ public class ExceptionHandlerAdvice {
 		return response;
 	}
 
+	// 400
 	@ResponseStatus(HttpStatus.BAD_REQUEST) 
-	@ExceptionHandler({BindException.class, MissingServletRequestParameterException.class})
+	@ExceptionHandler({
+		BindException.class
+		, MissingServletRequestParameterException.class
+		, MethodArgumentNotValidException.class})
 	public @ResponseBody ResponseModel badRequestExceptionHandler() throws Exception {
 		log.debug("######################## badRequestExceptionHandler()");
 		
@@ -62,6 +69,7 @@ public class ExceptionHandlerAdvice {
 		return response;
 	}
 
+	// 401
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(ServletRequestBindingException.class)
 	public @ResponseBody ResponseModel unAuthrizedExceptionHandler() throws Exception {
