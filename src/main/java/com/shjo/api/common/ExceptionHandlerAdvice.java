@@ -82,5 +82,19 @@ public class ExceptionHandlerAdvice {
 		
 		return response;
 	}
+
+	// 500
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(NullPointerException.class)
+	public @ResponseBody ResponseModel nullPointerExceptionHandler() throws Exception {
+		log.debug("######################## nullPointerExceptionHandler()");
+		
+		ResponseModel response = new ResponseModel();
+		
+		response.getHeader().setCode(ApiStatus.INTERNAL_SERVER_ERROR.getCode());
+		response.getHeader().setMessage(ApiStatus.INTERNAL_SERVER_ERROR.getMessage());
+		
+		return response;
+	}
 	
 }
