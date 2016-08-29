@@ -29,6 +29,28 @@ public class SpringBootApiApplication {
 	
 	@Bean
 	public FilterRegistrationBean filterRegistrationBean() {
+		// TODO filter 에서는 dao 같은 것을 사용할 수 없기 때문에 DelegatingFilterProxy를 활용 해야 한다.
+		/**
+			web.xml
+			<filter>
+	        	<filter-name>apiFilter</filter-name>
+				<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	    	</filter>
+	    	<filter-mapping>
+		        <filter-name>apiFilter</filter-name>
+		        <url-pattern>/apitest/*</url-pattern>
+		    </filter-mapping>
+			
+			ApiFilter.java
+			@Service("apiFilter")
+			public class ApiFilter implements Filter {
+				
+				@Autowired
+				private ApiTestDao apiTestDao;
+				...
+			}
+		 */
+		
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new RequestFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
