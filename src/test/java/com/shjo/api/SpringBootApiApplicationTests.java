@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.UUID;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -32,6 +35,11 @@ public class SpringBootApiApplicationTests {
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+	}
+	
+	@Test
+	public void 유니크키생성() throws Exception {
+		Log.debug("######### UUID: {}", UUID.randomUUID().toString());
 	}
 	
 	@Test
@@ -67,10 +75,20 @@ public class SpringBootApiApplicationTests {
 	}
 	
 	@Test
-	public void pathVariableGet() throws Exception {
+	public void error_404() throws Exception {
 		// interceptor: X, aop: X, exceptionHandler: X(404 exception handler 안만듬)
-		mockMvc.perform(get("/test4").header("access_key", "shjo"))
+		mockMvc.perform(get("/test654987").header("access_key", "shjo"))
 				.andExpect(status().is(404))
+				.andDo(print())
+				.andExpect(jsonPath("$.header.code").value(ApiStatus.NOT_FOUND.getCode()))
+				.andExpect(jsonPath("$.header.message").value(ApiStatus.NOT_FOUND.getMessage()));
+	}
+	
+	@Test
+	public void pathVariableGet_성공() throws Exception {
+		// interceptor: O, aop: O, exceptionHandler: -
+		mockMvc.perform(get("/test4/123").header("access_key", "shjo"))
+				.andExpect(status().isOk())
 				.andDo(print());
 	}
 	

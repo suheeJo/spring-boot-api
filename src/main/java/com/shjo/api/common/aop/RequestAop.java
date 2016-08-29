@@ -39,11 +39,11 @@ public class RequestAop {
 		if(classMappingValue != null) {
 			uri = classMappingValue.value()[0];
 		}
+		// TODO 예외 추가. PathParameter 같은 경우 체크 할 수 없음.
 		
 		Method method = methodSignature.getMethod();
 		uri = uri + (String)method.getAnnotation(RequestMapping.class).value()[0];
 		log.debug("###################### uri1: {}", uri);
-		log.debug("###################### uri2: {}", request.getRequestURI());
 		
 		// ip
 		ip = request.getRemoteAddr();
