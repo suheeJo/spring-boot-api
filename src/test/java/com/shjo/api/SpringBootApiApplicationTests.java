@@ -43,6 +43,15 @@ public class SpringBootApiApplicationTests {
 	}
 	
 	@Test
+	public void nonAuthCheck() throws Exception {
+		mockMvc.perform(get("/test").header("access_key", "123"))
+//				.andExpect(status().is(401))
+				.andDo(print())
+				.andExpect(jsonPath("$.header.code").value(ApiStatus.UNAUTHORIZED.getCode()))
+				.andExpect(jsonPath("$.header.message").value(ApiStatus.UNAUTHORIZED.getMessage()));
+	}
+	
+	@Test
 	public void requestbodyPost_405() throws Exception {
 		// interceptor: X, aop: X, exceptionHandler: O
 		mockMvc.perform(delete("/test5").header("access_key", "shjo"))

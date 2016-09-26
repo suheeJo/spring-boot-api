@@ -3,6 +3,7 @@ package com.shjo.api.common.aop;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.shjo.api.common.ApiStatus;
+import com.shjo.api.model.ResponseModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,7 +60,13 @@ public class RequestAop {
 		
 		
 		// TODO 권한 확인
-		
+		if("123".equals(accessKey)) {
+			ResponseModel responseModel = new ResponseModel();
+			responseModel.getHeader().setCode(ApiStatus.UNAUTHORIZED.getCode());
+			responseModel.getHeader().setMessage(ApiStatus.UNAUTHORIZED.getMessage());
+//			return responseModel;
+			throw new NullPointerException();
+		}
 		
 		
 		return  joinPoint.proceed();
