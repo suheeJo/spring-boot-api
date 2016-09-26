@@ -3,7 +3,6 @@ package com.shjo.api.common.aop;
 import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
